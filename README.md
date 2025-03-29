@@ -1,37 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Roady
+
+Roady is a web application that helps users create personalized learning roadmaps. Users can input a topic they want to learn, and the app will generate a step-by-step timetable. The generated roadmap can be visualized as a tree structure, allowing users to track their progress interactively.
+
+## Features
+
+- **Topic Input**: Users can enter the topic they want to learn.
+- **Roadmap Generation**: Automatically generate a step-by-step roadmap for the topic.
+- **Editable Topics**: Users can delete or modify topics before finalizing the roadmap.
+- **Tree Visualization**: Visualize the roadmap as a tree with branches, where each branch represents a topic or subtopic.
+- **Progress Tracking**: Users can tick off completed topics to track their progress.
+
+## How It Works
+
+1. Enter a topic you want to learn.
+2. Click the "Roadmap It" button to generate a roadmap.
+3. Edit or delete topics as needed.
+4. Refresh the roadmap to finalize it.
+5. Visualize the roadmap as a tree structure.
+6. Track your progress by marking topics as completed.
+
+## Example
+
+The roadmap tree will look like this:
+
+```
+Root Topic
+├── Subtopic 1
+│   ├── Sub-subtopic 1.1
+│   └── Sub-subtopic 1.2
+├── Subtopic 2
+└── Subtopic 3
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/roady.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open the app in your browser at `http://localhost:3000`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Contributing
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Contributions are welcome! Feel free to open issues or submit pull requests.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## License
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# roady
+This project is licensed under the MIT License.
