@@ -1,56 +1,73 @@
 # Roady
 
-Roady is a web application that helps users create personalized learning roadmaps. Users can input a topic they want to learn, and the app will generate a step-by-step timetable. The generated roadmap can be visualized as a tree structure, allowing users to track their progress interactively.
+Roady is a roadmap editor application that allows users to create, customize, and finalize roadmaps. The application provides an intuitive interface for editing roadmaps and includes features like modal-based customization and real-time updates.
 
 ## Features
 
-- **Topic Input**: Users can enter the topic they want to learn.
-- **Roadmap Generation**: Automatically generate a step-by-step roadmap for the topic.
-- **Editable Topics**: Users can delete or modify topics before finalizing the roadmap.
-- **Tree Visualization**: Visualize the roadmap as a tree with branches, where each branch represents a topic or subtopic.
-- **Progress Tracking**: Users can tick off completed topics to track their progress.
+- **Roadmap Editor**: A powerful editor for creating and modifying roadmaps.
+- **Customization**: Users can customize their roadmap using a modal interface.
+- **Single Roadmap**: The application supports only one roadmap at a time, which is stored in the browser's local storage.
+- **Real-Time Updates**: Changes to the roadmap are reflected immediately.
+- **Loading State**: Visual feedback is provided during loading operations using a spinner.
 
 ## How It Works
 
-1. Enter a topic you want to learn.
-2. Click the "Roadmap It" button to generate a roadmap.
-3. Edit or delete topics as needed.
-4. Refresh the roadmap to finalize it.
-5. Visualize the roadmap as a tree structure.
-6. Track your progress by marking topics as completed.
+1. **Roadmap Storage**: The roadmap data is stored in the browser's local storage. This ensures that the roadmap persists across sessions.
+2. **Customization**: Users can customize the roadmap by entering details in a modal. The customization is processed and applied to the roadmap.
+3. **Finalization**: Once the roadmap is finalized, users can navigate to the tree view for further exploration.
 
-## Example
+## Key Components
 
-The roadmap tree will look like this:
+- **RoadmapEditorPage**: The main page for editing the roadmap.
+- **Modal**: A reusable modal component for customization.
+- **Toast Notifications**: Feedback messages are displayed using the `sonner` library.
+- **Loading Spinner**: A spinner icon (`react-icons/fa`) is used to indicate loading states.
 
-```
-Root Topic
-├── Subtopic 1
-│   ├── Sub-subtopic 1.1
-│   └── Sub-subtopic 1.2
-├── Subtopic 2
-└── Subtopic 3
-```
+## Usage
 
-## Getting Started
+1. **Reset Roadmap**: Click the "Reset" button to clear the current roadmap and start fresh.
+2. **Customize Roadmap**: Click the "Customize" button to open the modal and enter customization details.
+3. **Finalize Roadmap**: Click the "Finalize Roadmap" button to save and navigate to the tree view.
+
+## Limitations
+
+- **Single Roadmap**: Only one roadmap can be managed at a time. Creating a new roadmap will overwrite the existing one.
+- **Local Storage**: The roadmap is stored in the browser's local storage. Clearing the browser's storage will delete the roadmap.
+
+## Development
+
+### Prerequisites
+
+- Node.js and npm installed.
+- A modern browser for testing.
+
+### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/roady.git
+   git clone https://github.com/your-repo/roady.git
    ```
-2. Install dependencies:
+2. Navigate to the project directory:
+   ```bash
+   cd roady
+   ```
+3. Install dependencies:
    ```bash
    npm install
    ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open the app in your browser at `http://localhost:3000`.
 
-## Contributing
+### Running the Application
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
+Start the development server:
+```bash
+npm run dev
+```
+
+Open the application in your browser at `http://localhost:3000`.
+
+### Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
 ## License
 

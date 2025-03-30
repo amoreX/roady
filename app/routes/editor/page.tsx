@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import RoadmapEditor from "@/components/roadmap-editor"
 import { useRoadmapContext } from "@/app/context/roadmapContext"
 import Modal from "@/components/ui/modal" // Assuming a Modal component exists
@@ -17,6 +17,10 @@ export default function RoadmapEditorPage() {
   const [isModalOpen, setModalOpen] = useState(false)
   const [cust,setCust]=useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
+
+  useEffect(() => {
+    toast("Note: Only one roadmap is supported and stored in local storage.");
+  }, []);
 
   const handleFinalizeRoadmap = () => {
     router.push("/routes/tree")
