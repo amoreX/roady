@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect,useCallback } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Search, Sparkles } from "lucide-react"
 import { motion } from "framer-motion"
@@ -14,12 +14,14 @@ import { Roadmap } from "@/app/context/roadmapContext"
 import { toast } from "sonner"
 
 export default function RoadmapGenerator() {
-  const { roadmap, update } = useRoadmapContext();
+  const { roadmap, update,getLocal,useLocal } = useRoadmapContext();
   const router = useRouter()
-
+  const check=getLocal();
   const [r, setR] = useState<Roadmap>(); //temporary roadmap storage before updating context
   const [topic, setTopic] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
+
+
 
   const handleGenerateRoadmap = () => {
     setIsGenerating(true);
@@ -108,6 +110,7 @@ export default function RoadmapGenerator() {
                   </div>
                 )}
               </Button>
+              {check && <div className="cursor-pointer hover:underline" onClick={()=>{useLocal();router.push("/routes/tree")}}>{check}</div>}
             </div>
           </CardContent>
         </Card>

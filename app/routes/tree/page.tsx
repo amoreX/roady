@@ -7,7 +7,7 @@ import RoadmapTree from "@/components/roadmap-tree"
 import { useRoadmapContext } from "@/app/context/roadmapContext"
 export default function RoadmapTreePage() {
   const router = useRouter()
-  const {roadmap,update,getProgress}=useRoadmapContext();
+  const {roadmap,update,getProgress,delLocal}=useRoadmapContext();
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg bg-white/80 p-4 backdrop-blur-sm shadow-sm dark:bg-slate-900/80">
@@ -26,10 +26,7 @@ export default function RoadmapTreePage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => router.push("/routes/roadmapeditor")} className="border-violet-200 dark:border-violet-900/30">
-            Customize
-          </Button>
-          <Button variant="outline" onClick={() => router.push("/")} className="border-violet-200 dark:border-violet-900/30">
+          <Button variant="outline" onClick={() => {delLocal();router.push("/")}} className="border-violet-200 dark:border-violet-900/30">
             Reset
           </Button>
         </div>

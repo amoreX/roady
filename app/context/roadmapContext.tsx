@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode,useEffect } from "react"
+import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 
 interface RoadmapNode {
     id: string;
@@ -13,7 +13,7 @@ interface RoadmapNode {
 export interface Roadmap {
     id: string;
     name: string;
-    completed:boolean;
+    completed: boolean;
     timeEstimate: number;
     children: RoadmapNode[];
 }
@@ -25,38 +25,40 @@ interface RoadmapContextProps {
     deleteNodeById: (id: string) => void;
     getProgress: () => number;
     updateByNode: (updatedNode: RoadmapNode) => void;
-    useLocal: () => void;
+    delLocal: () => void;
+    getLocal:()=> String;
+    useLocal:()=>void;
 }
 
-const sampleRoadmap: Roadmap = {
-    id: "root",
-    name: "Data Structures and Algorithms",
-    timeEstimate: 40,
-    completed:false,
-    children: [
-        {
-            id: "1",
-            name: "Arrays & Hashing",
-            completed: false,
-            timeEstimate: 10,
-            children: [
-                { id: "1-1", name: "Two Sum", completed: false, timeEstimate: 2 },
-                { id: "1-2", name: "Valid Anagram", completed: false, timeEstimate: 3 },
-                { id: "1-3", name: "Group Anagrams", completed: false, timeEstimate: 5 },
-            ],
-        },
-        {
-            id: "2",
-            name: "Two Pointers",
-            completed: false,
-            timeEstimate: 8,
-            children: [
-                { id: "2-1", name: "Valid Palindrome", completed: false, timeEstimate: 3 },
-                { id: "2-2", name: "3Sum", completed: false, timeEstimate: 5 },
-            ],
-        },
-    ],
-};
+// const sampleRoadmap: Roadmap = {
+//     id: "root",
+//     name: "Data Structures and Algorithms",
+//     timeEstimate: 40,
+//     completed: false,
+//     children: [
+//         {
+//             id: "1",
+//             name: "Arrays & Hashing",
+//             completed: false,
+//             timeEstimate: 10,
+//             children: [
+//                 { id: "1-1", name: "Two Sum", completed: false, timeEstimate: 2 },
+//                 { id: "1-2", name: "Valid Anagram", completed: false, timeEstimate: 3 },
+//                 { id: "1-3", name: "Group Anagrams", completed: false, timeEstimate: 5 },
+//             ],
+//         },
+//         {
+//             id: "2",
+//             name: "Two Pointers",
+//             completed: false,
+//             timeEstimate: 8,
+//             children: [
+//                 { id: "2-1", name: "Valid Palindrome", completed: false, timeEstimate: 3 },
+//                 { id: "2-2", name: "3Sum", completed: false, timeEstimate: 5 },
+//             ],
+//         },
+//     ],
+// };
 
 const RoadmapContext = createContext<RoadmapContextProps | undefined>(undefined);
 
@@ -114,17 +116,20 @@ const calculateProgress = (nodes: RoadmapNode[]): { completed: number; total: nu
 };
 
 export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
-    const [roadmap, setRoadmap] = useState<Roadmap>(() => {
-        if (typeof window !== "undefined") {
+    const [roadmap, setRoadmap] = useState<Roadmap>(() :any => {
+        
+        if ( typeof window !== "undefined" ) {
+            
             const storedRoadmap = localStorage.getItem("roadmap");
-            return storedRoadmap ? JSON.parse(storedRoadmap) : sampleRoadmap;
+            return storedRoadmap ? JSON.parse(storedRoadmap) : null;
         }
-        return sampleRoadmap;
+        return null;
     });
 
     const update = (roadmap?: Roadmap) => {
         if (roadmap) {
-            setRoadmap(roadmap);
+            setRoadmap((prev) => (JSON.stringify(prev) !== JSON.stringify(roadmap) ? roadmap : prev));
+            localStorage.setItem("roadmap", JSON.stringify(roadmap));
         }
     };
 
@@ -151,29 +156,38 @@ export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
         }));
     };
 
+    const getLocal =(()=>{
+        if(typeof window !=="undefined"){
+            const p =localStorage.getItem("roadmap");
+            if (p!="" && p !=null && p!=undefined){
+                return JSON.parse(p).name;
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    })
+
+    const useLocal=(()=>{
+        setRoadmap(JSON.parse(localStorage.getItem("roadmap")));
+    })
+
     const getProgress = () => {
         const { completed, total } = calculateProgress(roadmap.children);
         return total > 0 ? (completed / total) * 100 : 0;
     };
 
-    const useLocal = () => {
+    const delLocal = () => {
         if (typeof window !== "undefined") {
-            const storedRoadmap = localStorage.getItem("roadmap");
-            if (storedRoadmap) {
-                setRoadmap(JSON.parse(storedRoadmap));
-            }
+            localStorage.removeItem("roadmap");
         }
     };
 
-    // Update local storage whenever the roadmap changes
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("roadmap", JSON.stringify(roadmap));
-        }
-    }, [roadmap]);
-
     return (
-        <RoadmapContext.Provider value={{ roadmap, update, toggleCompletion, deleteNodeById, getProgress, updateByNode, useLocal }}>
+        <RoadmapContext.Provider value={{ roadmap, update, toggleCompletion, deleteNodeById, getProgress, updateByNode,  delLocal,getLocal,useLocal }}>
             {children}
         </RoadmapContext.Provider>
     );
