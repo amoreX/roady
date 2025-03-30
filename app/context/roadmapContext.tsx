@@ -21,6 +21,7 @@ interface RoadmapContextProps{
     roadmap:Roadmap;
     update:(roadmap?:Roadmap)=>void;
     toggleCompletion:(id:string)=>void;
+    deleteNodeById:(id:string)=>void;
 }
 
 const sampleRoadmap = {
@@ -74,13 +75,21 @@ const sampleRoadmap = {
 
 const RoadmapContext=createContext<RoadmapContextProps |undefined>(undefined);
 
-
 const updateCompletion = (node: RoadmapNode, id: string): RoadmapNode => ({
     ...node,
     completed: node.id === id ? !node.completed : node.completed,
     children: node.children?.map((child) => updateCompletion(child, id)),
-  });
+});
 
+const deleteNode = (node: RoadmapNode, id: string): RoadmapNode | null => {
+    if (node.id === id) return null;
+    return {
+        ...node,
+        children: node.children
+            ?.map((child) => deleteNode(child, id))
+            .filter((child) => child !== null) as RoadmapNode[],
+    };
+};
 
 export const RoadmapProvider=({children}:{children:ReactNode})=>{
     const [roadmap,setRoadmap]=useState<Roadmap>(sampleRoadmap);
@@ -96,15 +105,23 @@ export const RoadmapProvider=({children}:{children:ReactNode})=>{
           ...prev,
           children: prev.children.map((child) => updateCompletion(child, id)),
         }));
-      };
+    };
+
+    const deleteNodeById = (id: string) => {
+        setRoadmap((prev) => ({
+            ...prev,
+            children: prev.children
+                .map((child) => deleteNode(child, id))
+                .filter((child) => child !== null) as RoadmapNode[],
+        }));
+    };
     
-      return (
-        <RoadmapContext.Provider value={{ roadmap, update,toggleCompletion }}>
+    return (
+        <RoadmapContext.Provider value={{ roadmap, update, toggleCompletion, deleteNodeById }}>
           {children}
         </RoadmapContext.Provider>
-      );
+    );
 };
-
 
 export const useRoadmapContext = () => {
 	const context = useContext(RoadmapContext);
