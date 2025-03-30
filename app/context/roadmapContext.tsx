@@ -171,9 +171,12 @@ export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
         }
     })
 
-    const useLocal=(()=>{
-        setRoadmap(JSON.parse(localStorage.getItem("roadmap")));
-    })
+    const useLocal = (() => {
+        const storedRoadmap = localStorage.getItem("roadmap");
+        if (storedRoadmap) {
+            setRoadmap(JSON.parse(storedRoadmap));
+        }
+    });
 
     const getProgress = () => {
         const { completed, total } = calculateProgress(roadmap.children);
