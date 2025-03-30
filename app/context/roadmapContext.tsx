@@ -19,6 +19,7 @@ interface Roadmap{
 
 interface RoadmapContextProps{
     roadmap:Roadmap;
+    update:(roadmap:Roadmap)=>void;
     toggleCompletion:(id:string)=>void;
 }
 
@@ -84,15 +85,19 @@ const updateCompletion = (node: RoadmapNode, id: string): RoadmapNode => ({
 export const RoadmapProvider=({children}:{children:ReactNode})=>{
     const [roadmap,setRoadmap]=useState<Roadmap>(sampleRoadmap);
     
+    const update=(roadmap:Roadmap)=>{
+        setRoadmap(roadmap);
+    }
+
     const toggleCompletion = (id: string) => {
         setRoadmap((prev) => ({
           ...prev,
           children: prev.children.map((child) => updateCompletion(child, id)),
         }));
       };
-
+    
       return (
-        <RoadmapContext.Provider value={{ roadmap, toggleCompletion }}>
+        <RoadmapContext.Provider value={{ roadmap, update,toggleCompletion }}>
           {children}
         </RoadmapContext.Provider>
       );

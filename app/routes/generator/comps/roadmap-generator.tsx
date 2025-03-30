@@ -12,21 +12,29 @@ import { useRoadmapContext } from "@/app/context/roadmapContext"
 
 
 export default function RoadmapGenerator() {
-  const [topic, setTopic] = useState("")
-  
-  const [isGenerating, setIsGenerating] = useState(false)
-  const router = useRouter()
-  const {roadmap}=useRoadmapContext();
+  const {roadmap,update}=useRoadmapContext();
   console.log(roadmap);
+  
+  const router = useRouter()
+  
+  const [topic, setTopic] = useState("")
+  const [isGenerating, setIsGenerating] = useState(false)
+  
   const handleGenerateRoadmap = () => {
     setIsGenerating(true)
 
     // Simulate API call with timeout
     setTimeout(() => {
-      
-      router.push("/routes/editor")
-      setIsGenerating(false)
-    }, 1500)
+      try{
+        //Api call to get new Roadmap
+        //update Roadmap in context
+        router.push("/routes/editor")
+        
+      }catch(err){
+        console.log(err);
+        setIsGenerating(false)
+      }
+    }, 500)
   }
 
   return (
