@@ -1,9 +1,10 @@
-
-
+"use client"
+import { useRouter } from "next/navigation"
 export default function Home() {
+  const router=useRouter();
+  router.push("/routes/generator");
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-2xl font-bold">Welcome to Roady</h1>
-    </div>
-  );
+    <></>
+  )
 }
+
