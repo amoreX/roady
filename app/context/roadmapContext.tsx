@@ -10,7 +10,7 @@ interface RoadmapNode {
     children?: RoadmapNode[];
 }
 
-interface Roadmap{
+export interface Roadmap{
     id: string;
     name:string;
     timeEstimate:number;
@@ -19,7 +19,7 @@ interface Roadmap{
 
 interface RoadmapContextProps{
     roadmap:Roadmap;
-    update:(roadmap:Roadmap)=>void;
+    update:(roadmap?:Roadmap)=>void;
     toggleCompletion:(id:string)=>void;
 }
 
@@ -85,8 +85,10 @@ const updateCompletion = (node: RoadmapNode, id: string): RoadmapNode => ({
 export const RoadmapProvider=({children}:{children:ReactNode})=>{
     const [roadmap,setRoadmap]=useState<Roadmap>(sampleRoadmap);
     
-    const update=(roadmap:Roadmap)=>{
-        setRoadmap(roadmap);
+    const update=(roadmap?:Roadmap)=>{
+        if(roadmap){
+            setRoadmap(roadmap);
+        }
     }
 
     const toggleCompletion = (id: string) => {

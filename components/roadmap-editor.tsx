@@ -23,18 +23,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-
+ import { useRoadmapContext } from "@/app/context/roadmapContext"
 interface RoadmapNode {
   id: string
   name: string
   completed?: boolean
   timeEstimate?: number // Time in hours
   children?: RoadmapNode[]
-}
-
-interface RoadmapEditorProps {
-  roadmap: RoadmapNode
-  setRoadmap: (roadmap: RoadmapNode) => void
 }
 
 function SortableItem({
@@ -126,7 +121,8 @@ function SortableItem({
   )
 }
 
-export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProps) {
+export default function RoadmapEditor() {
+  const {roadmap}=useRoadmapContext();
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -139,7 +135,7 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
   )
 
   const [totalTime, setTotalTime] = useState(() => {
-    return calculateTotalTime(roadmap)
+    // return calculateTotalTime(roadmap)
   })
 
   function calculateTotalTime(node: RoadmapNode): number {
@@ -162,10 +158,10 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
       const newIndex = roadmap.children!.findIndex((item) => item.id === over.id)
 
       const newChildren = arrayMove(roadmap.children!, oldIndex, newIndex)
-      setRoadmap({
-        ...roadmap,
-        children: newChildren,
-      })
+      // setRoadmap({
+      //   ...roadmap,
+      //   children: newChildren,
+      // })
     }
   }
 
@@ -175,8 +171,8 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
       ...roadmap,
       children: newChildren,
     }
-    setRoadmap(updatedRoadmap)
-    setTotalTime(calculateTotalTime(updatedRoadmap))
+    // setRoadmap(updatedRoadmap)
+    // setTotalTime(calculateTotalTime(updatedRoadmap))
   }
 
   const handleTimeChange = (id: string, hours: number) => {
@@ -195,13 +191,13 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
       return node
     }
 
-    const updatedRoadmap = updateNodeTime(roadmap)
-    setRoadmap(updatedRoadmap)
-    setTotalTime(calculateTotalTime(updatedRoadmap))
+    // const updatedRoadmap = updateNodeTime(roadmap)
+    // setRoadmap(updatedRoadmap)
+    // setTotalTime(calculateTotalTime(updatedRoadmap))
   }
 
   const handleTotalTimeChange = (hours: number) => {
-    setTotalTime(hours)
+    // setTotalTime(hours)
     // You could distribute this time proportionally among topics if desired
   }
 
@@ -233,14 +229,14 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6 rounded-full p-0 text-violet-700 hover:bg-violet-200 dark:text-violet-300 dark:hover:bg-violet-800/50"
-                onClick={() => handleTotalTimeChange(Math.max(0, totalTime - 1))}
+                // onClick={() => handleTotalTimeChange(Math.max(0, totalTime - 1))}
               >
                 <Minus className="h-3 w-3" />
               </Button>
               <Input
                 id="total-time"
                 type="number"
-                value={totalTime}
+                // value={totalTime}
                 onChange={(e) => handleTotalTimeChange(Number.parseInt(e.target.value) || 0)}
                 className="h-8 w-16 border-0 bg-transparent p-0 text-center text-sm font-medium text-violet-700 focus-visible:ring-0 dark:text-violet-300"
                 min="0"
@@ -250,7 +246,7 @@ export default function RoadmapEditor({ roadmap, setRoadmap }: RoadmapEditorProp
                 variant="ghost"
                 size="icon"
                 className="h-6 w-6 rounded-full p-0 text-violet-700 hover:bg-violet-200 dark:text-violet-300 dark:hover:bg-violet-800/50"
-                onClick={() => handleTotalTimeChange(totalTime + 1)}
+                // onClick={() => handleTotalTimeChange(totalTime + 1)}
               >
                 <Plus className="h-3 w-3" />
               </Button>

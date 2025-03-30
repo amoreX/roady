@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect,useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Search, Sparkles } from "lucide-react"
 import { motion } from "framer-motion"
@@ -9,38 +9,54 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { useRoadmapContext } from "@/app/context/roadmapContext"
-
+import { getRoad } from "@/app/utils/getRoadmap";
+import { Roadmap } from "@/app/context/roadmapContext"
+import { toast } from "sonner"
 
 export default function RoadmapGenerator() {
-  const {roadmap,update}=useRoadmapContext();
-  console.log(roadmap);
-  
+  const { roadmap, update } = useRoadmapContext();
   const router = useRouter()
-  
+
+  const [r, setR] = useState<Roadmap>(); //temporary roadmap storage before updating context
   const [topic, setTopic] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
-  
-  const handleGenerateRoadmap = () => {
-    setIsGenerating(true)
 
-    // Simulate API call with timeout
-    setTimeout(() => {
-      try{
-        //Api call to get new Roadmap
-        //update Roadmap in context
-        router.push("/routes/editor")
-        
-      }catch(err){
+  const handleGenerateRoadmap = () => {
+    setIsGenerating(true);
+    const handleRoadmap = async () => {
+      try {
+        const generatedRoadmap = await getRoad(topic);
+        setR(generatedRoadmap);
+        toast("Your Roadmap is successfully loaded.");
+      } catch (err) {
         console.log(err);
-        setIsGenerating(false)
+        setIsGenerating(false);
       }
-    }, 500)
-  }
+    };
+    handleRoadmap();
+  };
+
+  
+
+  useEffect(() => {
+    if (r) {
+      update(r);
+      const timer = setTimeout(() => {
+        router.push("/routes/editor");
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [r,update]);
+
+  useEffect(() => {
+    console.log(roadmap);
+  }, [roadmap]);
 
   return (
     <div className="mt-8 space-y-8">
-      <motion.div initial="hidden" animate="visible" exit="exit" 
-    //   variants={containerVariants}
+      <motion.div initial="hidden" animate="visible" exit="exit"
+      //   variants={containerVariants}
       >
         <Card className="mx-auto max-w-2xl overflow-hidden border-2 border-violet-200 bg-white/80 backdrop-blur-sm dark:border-violet-900/30 dark:bg-slate-900/80">
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500"></div>
@@ -60,7 +76,7 @@ export default function RoadmapGenerator() {
                 />
               </div>
               <Button
-                onClick={handleGenerateRoadmap}
+                onClick={() => handleGenerateRoadmap()}
                 disabled={!topic.trim() || isGenerating}
                 className="relative w-full overflow-hidden bg-gradient-to-r from-violet-500 to-indigo-500 py-6 text-lg font-medium text-white transition-all hover:shadow-lg hover:shadow-violet-500/25"
               >
