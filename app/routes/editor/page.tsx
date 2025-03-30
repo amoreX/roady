@@ -2,13 +2,35 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 import RoadmapEditor from "@/components/roadmap-editor"
 import { useRoadmapContext } from "@/app/context/roadmapContext"
+import Modal from "@/components/ui/modal" // Assuming a Modal component exists
+import { AnimatePresence, motion } from "framer-motion"
+import {getCustom} from "@/app/utils/customiseRoadmap"
+import { toast } from "sonner"
 export default function RoadmapEditorPage() {
   const router = useRouter()
-  const {roadmap}=useRoadmapContext();
+  const {roadmap,update}=useRoadmapContext();
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [cust,setCust]=useState("");
   const handleFinalizeRoadmap = () => {
     router.push("/routes/tree")
+  }
+
+  const handleSubmit=()=>{
+    const handleRoadmap = async () => {
+      try {
+        const generatedRoadmap = await getCustom(cust,JSON.stringify(roadmap));
+        update(generatedRoadmap);
+        setModalOpen(false);
+        toast("Your Roadmap is successfully modified.");
+      } catch (err) {
+        console.log(err);
+        toast("Error loading , Try somethign else!");
+      }
+    };
+    handleRoadmap();
   }
   if (!roadmap) return null;
   return (
@@ -21,6 +43,9 @@ export default function RoadmapEditorPage() {
           <Button variant="outline" onClick={() => router.push("/")} className="border-violet-200 dark:border-violet-900/30">
             Reset
           </Button>
+          <Button variant="outline" onClick={() => setModalOpen(true)} className="border-violet-200 dark:border-violet-900/30">
+            Customize
+          </Button>
           <Button
             onClick={handleFinalizeRoadmap}
             className="bg-gradient-to-r from-violet-500 to-indigo-500 text-white hover:shadow-md hover:shadow-violet-500/25"
@@ -30,6 +55,36 @@ export default function RoadmapEditorPage() {
         </div>
       </div>
       <RoadmapEditor  />
+      <AnimatePresence>
+      {isModalOpen && (
+          <Modal onClose={() => setModalOpen(false)}>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="p-6 space-y-4"
+            >
+              <h3 className="text-lg font-bold">Customize Roadmap</h3>
+              <input
+                type="text"
+                value={cust}
+                onChange={(e)=>setCust(e.target.value)}
+                placeholder="Enter customization details"
+                className="w-full p-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+              />
+              <div className="flex justify-end gap-2 pt-4">
+                <Button onClick={() => setModalOpen(false)} className="px-4 py-2">
+                  Close
+                </Button>
+                <Button onClick={() => handleSubmit()} className="px-4 py-2 bg-violet-500 text-white hover:bg-violet-600">
+                  Submit
+                </Button>
+              </div>
+            </motion.div>
+          </Modal>
+      )}
+      </AnimatePresence>
     </div>
   )
 }
