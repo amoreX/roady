@@ -1,8 +1,16 @@
-import RoadmapGenerator from "@/app/routes/generator/comps/roadmap-generator"
+"use client"
+import { motion } from "framer-motion";
+import RoadmapGenerator from "@/app/routes/generator/comps/roadmap-generator";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex justify-center bg-gradient-to-br from-violet-50 via-background to-blue-50 dark:from-slate-950 dark:via-background dark:to-slate-900">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex justify-center bg-gradient-to-br from-violet-50 via-background to-blue-50 dark:from-slate-950 dark:via-background dark:to-slate-900"
+    >
       <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))] dark:bg-grid-slate-800/20"></div>
       <div className="container relative py-8 md:py-12">
         <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4 text-center">
@@ -31,7 +39,7 @@ export default function Home() {
         </div>
         <RoadmapGenerator />
       </div>
-    </main>
-  )
+    </motion.main>
+  );
 }
 

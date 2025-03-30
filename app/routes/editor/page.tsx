@@ -71,7 +71,7 @@ export default function RoadmapEditorPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="p-6 space-y-4"
+              className="p-2 space-y-2"
             >
               <h3 className="text-lg font-bold">Customize Roadmap</h3>
               <input
