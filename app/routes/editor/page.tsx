@@ -29,7 +29,7 @@ export default function RoadmapEditorPage({ roadmap, setRoadmap }: any) {
           </Button>
         </div>
       </div>
-      <RoadmapEditor roadmap={roadmap} setRoadmap={setRoadmap} />
+      {/* <RoadmapEditor roadmap={roadmap} setRoadmap={setRoadmap} /> */}
     </div>
   )
 }
