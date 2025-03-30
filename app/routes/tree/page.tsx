@@ -34,29 +34,7 @@ export default function RoadmapTreePage() {
           </Button>
         </div>
       </div>
-
-      <Tabs defaultValue="tree" className="w-full">
-        <TabsList className="grid w-full max-w-md grid-cols-2 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80 p-1 rounded-lg">
-          <TabsTrigger
-            value="tree"
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
-          >
-            Tree View
-          </TabsTrigger>
-          <TabsTrigger
-            value="progress"
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
-          >
-            Progress
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="tree" className="mt-4">
           <RoadmapTree />
-        </TabsContent>
-        <TabsContent value="progress" className="mt-4">
-          Progress content
-        </TabsContent>
-      </Tabs>
     </div>
 
   )

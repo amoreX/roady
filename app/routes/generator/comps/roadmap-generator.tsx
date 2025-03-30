@@ -30,6 +30,7 @@ export default function RoadmapGenerator() {
         toast("Your Roadmap is successfully loaded.");
       } catch (err) {
         console.log(err);
+        toast("Error loading , Try somethign else!");
         setIsGenerating(false);
       }
     };

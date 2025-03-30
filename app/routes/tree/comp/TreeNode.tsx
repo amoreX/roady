@@ -69,7 +69,7 @@ export default function TreeNode({
             id={node.id}
             checked={checkboxState}
             onCheckedChange={(checked) => {
-              onToggleComplete(node.id, checked === true || checked === "indeterminate")
+              onToggleComplete(node.id, checked === true); // Ensure this function updates the completion status
             }}
             className="border-violet-400 data-[state=checked]:bg-violet-500 data-[state=checked]:border-violet-500"
           />
