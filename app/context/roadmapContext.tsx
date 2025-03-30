@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from "react"
+import { createContext, useContext, useState, ReactNode,useEffect } from "react"
 
 interface RoadmapNode {
     id: string;
@@ -25,6 +25,7 @@ interface RoadmapContextProps {
     deleteNodeById: (id: string) => void;
     getProgress: () => number;
     updateByNode: (updatedNode: RoadmapNode) => void;
+    useLocal: () => void;
 }
 
 const sampleRoadmap: Roadmap = {
@@ -113,7 +114,13 @@ const calculateProgress = (nodes: RoadmapNode[]): { completed: number; total: nu
 };
 
 export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
-    const [roadmap, setRoadmap] = useState<Roadmap>(sampleRoadmap);
+    const [roadmap, setRoadmap] = useState<Roadmap>(() => {
+        if (typeof window !== "undefined") {
+            const storedRoadmap = localStorage.getItem("roadmap");
+            return storedRoadmap ? JSON.parse(storedRoadmap) : sampleRoadmap;
+        }
+        return sampleRoadmap;
+    });
 
     const update = (roadmap?: Roadmap) => {
         if (roadmap) {
@@ -149,8 +156,24 @@ export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
         return total > 0 ? (completed / total) * 100 : 0;
     };
 
+    const useLocal = () => {
+        if (typeof window !== "undefined") {
+            const storedRoadmap = localStorage.getItem("roadmap");
+            if (storedRoadmap) {
+                setRoadmap(JSON.parse(storedRoadmap));
+            }
+        }
+    };
+
+    // Update local storage whenever the roadmap changes
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("roadmap", JSON.stringify(roadmap));
+        }
+    }, [roadmap]);
+
     return (
-        <RoadmapContext.Provider value={{ roadmap, update, toggleCompletion, deleteNodeById, getProgress, updateByNode }}>
+        <RoadmapContext.Provider value={{ roadmap, update, toggleCompletion, deleteNodeById, getProgress, updateByNode, useLocal }}>
             {children}
         </RoadmapContext.Provider>
     );
