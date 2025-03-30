@@ -9,11 +9,15 @@ import Modal from "@/components/ui/modal" // Assuming a Modal component exists
 import { AnimatePresence, motion } from "framer-motion"
 import {getCustom} from "@/app/utils/customiseRoadmap"
 import { toast } from "sonner"
+import { FaSpinner } from "react-icons/fa" // Import spinner icon
+
 export default function RoadmapEditorPage() {
   const router = useRouter()
   const {roadmap,update}=useRoadmapContext();
   const [isModalOpen, setModalOpen] = useState(false)
   const [cust,setCust]=useState("");
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+
   const handleFinalizeRoadmap = () => {
     router.push("/routes/tree")
   }
@@ -21,13 +25,17 @@ export default function RoadmapEditorPage() {
   const handleSubmit=()=>{
     const handleRoadmap = async () => {
       try {
+        setIsLoading(true); // Set loading to true
         const generatedRoadmap = await getCustom(cust,JSON.stringify(roadmap));
         update(generatedRoadmap);
         setModalOpen(false);
         toast("Your Roadmap is successfully modified.");
+        window.location.reload(); // Reload the page
       } catch (err) {
         console.log(err);
         toast("Error loading , Try somethign else!");
+      } finally {
+        setIsLoading(false); // Set loading to false
       }
     };
     handleRoadmap();
@@ -78,7 +86,7 @@ export default function RoadmapEditorPage() {
                   Close
                 </Button>
                 <Button onClick={() => handleSubmit()} className="px-4 py-2 bg-violet-500 text-white hover:bg-violet-600">
-                  Submit
+                  {isLoading ? <FaSpinner className="animate-spin" /> : "Submit"} {/* Show spinner when loading */}
                 </Button>
               </div>
             </motion.div>

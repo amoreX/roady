@@ -25,6 +25,9 @@ export default function RoadmapGenerator() {
 
   const handleGenerateRoadmap = () => {
     setIsGenerating(true);
+    setTimeout(()=>{
+      toast("I swear it's getting the roadmap man , the AI is ass please bear with it :(");
+    },2500);
     const handleRoadmap = async () => {
       try {
         const generatedRoadmap = await getRoad(topic);
