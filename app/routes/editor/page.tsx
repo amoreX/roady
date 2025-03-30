@@ -7,9 +7,9 @@ import { useRoadmapContext } from "@/app/context/roadmapContext"
 export default function RoadmapEditorPage() {
   const router = useRouter()
   const {roadmap}=useRoadmapContext();
-  // const handleFinalizeRoadmap = () => {
-  //   router.push("/routes/tree")
-  // }
+  const handleFinalizeRoadmap = () => {
+    router.push("/routes/tree")
+  }
 
   return (
     <div className="space-y-6">
@@ -22,7 +22,7 @@ export default function RoadmapEditorPage() {
             Reset
           </Button>
           <Button
-            // onClick={handleFinalizeRoadmap}
+            onClick={handleFinalizeRoadmap}
             className="bg-gradient-to-r from-violet-500 to-indigo-500 text-white hover:shadow-md hover:shadow-violet-500/25"
           >
             Finalize Roadmap

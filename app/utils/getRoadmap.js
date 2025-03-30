@@ -12,6 +12,7 @@ export async function getRoad(topic) {
   let prompt = `give me a roadmap to learn ${topic} , do NOT skip any topic ,  include every topic in proper sections and only respond in JSON nothing else,do not give any other text , so that i can use JSON function to convert your response to JSON ,json structure should be identical to this  id: "root",
     name: "Data Structures and Algorithms",
     timeEstimate: 40,
+    completed:false,
     children: [
       {
         id: "1",
