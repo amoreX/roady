@@ -10,7 +10,7 @@ export default function RoadmapEditorPage() {
   const handleFinalizeRoadmap = () => {
     router.push("/routes/tree")
   }
-
+  if (!roadmap) return null;
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg bg-white/80 p-4 backdrop-blur-sm shadow-sm dark:bg-slate-900/80">
