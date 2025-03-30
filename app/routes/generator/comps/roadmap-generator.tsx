@@ -27,7 +27,7 @@ export default function RoadmapGenerator() {
     setIsGenerating(true);
     setTimeout(()=>{
       toast("I swear it's getting the roadmap man , the AI is ass please bear with it :(");
-    },2500);
+    },3500);
     const handleRoadmap = async () => {
       try {
         const generatedRoadmap = await getRoad(topic);
@@ -60,14 +60,14 @@ export default function RoadmapGenerator() {
   }, [roadmap]);
 
   return (
-    <div className="mt-8 space-y-8">
+    <div className="mt-8 space-y-8 p-4">
       <motion.div initial="hidden" animate="visible" exit="exit"
       //   variants={containerVariants}
       >
         <Card className="mx-auto max-w-2xl overflow-hidden border-2 border-violet-200 bg-white/80 backdrop-blur-sm dark:border-violet-900/30 dark:bg-slate-900/80">
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500"></div>
-          <CardContent className="p-8">
-            <div className="space-y-6">
+          <CardContent className="px-8 py-4">
+            <div className="space-y-4">
               <div className="text-center">
                 <h2 className="text-2xl font-bold">Start Your Learning Journey</h2>
                 <p className="text-muted-foreground">Enter a topic to generate a personalized roadmap</p>
@@ -113,7 +113,20 @@ export default function RoadmapGenerator() {
                   </div>
                 )}
               </Button>
-              {check && <div className="cursor-pointer hover:underline" onClick={()=>{useLocal();router.push("/routes/tree")}}>{check}</div>}
+              {check && (
+                <div
+                  className="cursor-pointer rounded-md px-4 py-2 text-center transition-all hover:bg-violet-100 hover:text-violet-700 dark:hover:bg-violet-900/30 dark:hover:text-violet-300"
+                  onClick={() => {
+                    useLocal();
+                    router.push("/routes/tree");
+                  }}
+                >
+                  <span className="block text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Previous Roadmap:
+                  </span>
+                  {check}
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

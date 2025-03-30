@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ChevronRight, ChevronDown, Check } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
-// import { RoadmapNode } from "@/app/context/roadmapContext"
+import { useRoadmapContext } from "@/app/context/roadmapContext"
+import { useState } from "react"
 
 interface RoadmapNode {
     id: string;
@@ -17,7 +18,6 @@ interface RoadmapNode {
 export default function TreeNode({
   node,
   level = 0,
-  onToggleComplete,
   expandedNodes,
   toggleNode,
   isLastChild = false,
@@ -25,12 +25,41 @@ export default function TreeNode({
 }: {
   node: RoadmapNode
   level?: number
-  onToggleComplete: (id: string, completed: boolean) => void
   expandedNodes: Set<string>
   toggleNode: (id: string) => void
   isLastChild?: boolean
   index?: number
 }) {
+  const { roadmap, update } = useRoadmapContext()
+  const [completedNodeIds, setCompletedNodeIds] = useState<Set<string>>(new Set())
+
+  const toggleComplete = (id: string) => {
+    const updateCompletion = (node: RoadmapNode, parentCompleted: boolean): RoadmapNode => ({
+      ...node,
+      completed: node.id === id ? !node.completed : parentCompleted || node.completed,
+      children: node.children?.map((child) =>
+        updateCompletion(child, node.id === id ? !node.completed : parentCompleted)
+      ),
+    })
+
+    const updatedRoadmap = {
+      ...roadmap,
+      children: roadmap.children.map((child) => updateCompletion(child, false)),
+    }
+
+    update(updatedRoadmap)
+
+    setCompletedNodeIds((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
   const hasChildren = node.children && node.children.length > 0
   const isExpanded = expandedNodes.has(node.id)
 
@@ -47,7 +76,7 @@ export default function TreeNode({
 
   return (
     <motion.div
-      className="select-none relative"
+      className="relative"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -68,9 +97,7 @@ export default function TreeNode({
           <Checkbox
             id={node.id}
             checked={checkboxState}
-            onCheckedChange={(checked) => {
-              onToggleComplete(node.id, checked === true); // Ensure this function updates the completion status
-            }}
+            onCheckedChange={() => toggleComplete(node.id)}
             className="border-violet-400 data-[state=checked]:bg-violet-500 data-[state=checked]:border-violet-500"
           />
           <label
@@ -111,7 +138,6 @@ export default function TreeNode({
                 <TreeNode
                   node={child}
                   level={level + 1}
-                  onToggleComplete={onToggleComplete}
                   expandedNodes={expandedNodes}
                   toggleNode={toggleNode}
                   isLastChild={index === node.children!.length - 1}

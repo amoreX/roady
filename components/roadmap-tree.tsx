@@ -22,7 +22,7 @@ interface RoadmapNode {
 
 
 export default function RoadmapTree() {
-  const { roadmap, getProgress, updateByNode } = useRoadmapContext()
+  const { roadmap, getProgress, update,updateByNode } = useRoadmapContext()
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(roadmap ? [roadmap.id] : []))
   const [animateTree, setAnimateTree] = useState(false)
 
@@ -35,7 +35,7 @@ export default function RoadmapTree() {
     const progressPercentage = getProgress
   }, [roadmap])
 
-  const toggleNode = (id: string) => {
+  const toggleNode = (id: string) => {   //Expand and contract Lists
     setExpandedNodes((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(id)) {
@@ -47,43 +47,13 @@ export default function RoadmapTree() {
     })
   }
 
-  const toggleComplete = (id: string, completed: boolean) => {
-    if (!roadmap) return
-
-    const updateNodeAndChildren = (node: RoadmapNode): RoadmapNode => {
-      if (node.id === id) {
-        return updateChildrenCompletion(node, completed)
-      }
-
-      if (node.children) {
-        return {
-          ...node,
-          children: node.children.map(updateNodeAndChildren),
-        }
-      }
-
-      return node
-    }
-
-    let updatedRoadmap: RoadmapNode = updateNodeAndChildren(roadmap)
-    updatedRoadmap = updateParentCompletion(updatedRoadmap)
-
-    if (typeof updateByNode === "function") {
-      updateByNode(updatedRoadmap)
-    } else {
-      console.error("updateByNode is not a function or has an invalid type.")
-    }
-
-    const progress = calculateProgress(updatedRoadmap)
-    const progressPercentage = Math.round((progress.completed / progress.total) * 100)
-  }
+  
 
   return (
     <div className={cn("p-2 transition-all duration-700", animateTree ? "opacity-100" : "opacity-0")}>
       {roadmap && (
         <TreeNode
           node={roadmap}
-          onToggleComplete={toggleComplete}
           expandedNodes={expandedNodes}
           toggleNode={toggleNode}
         />

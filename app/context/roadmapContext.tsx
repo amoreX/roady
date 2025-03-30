@@ -180,7 +180,7 @@ export const RoadmapProvider = ({ children }: { children: ReactNode }) => {
 
     const getProgress = () => {
         const { completed, total } = calculateProgress(roadmap.children);
-        return total > 0 ? (completed / total) * 100 : 0;
+        return total > 0 ? parseFloat(((completed / total) * 100).toFixed(2)) : 0;
     };
 
     const delLocal = () => {

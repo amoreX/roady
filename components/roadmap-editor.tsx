@@ -87,7 +87,7 @@ export default function RoadmapEditor() {
   }
 
   return (
-    <Card className="border-2 border-violet-200 bg-white/80 backdrop-blur-sm dark:border-violet-900/30 dark:bg-slate-900/80 overflow-hidden">
+    <Card className="   bg-white/80 backdrop-blur-sm dark:border-violet-900/30 dark:bg-slate-900/80 overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-500"></div>
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
