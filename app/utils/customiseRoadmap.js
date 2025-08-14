@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const cache = {};
 export async function getCustom(custom, roadmap) {
   const genAI = new GoogleGenerativeAI(
-    "AIzaSyAxWhVJfD7fw1RLuP86qNMbflH2N7gcchY"
+    "AIzaSyDTO_PHWACl8Vxx2EPp2u2EWLJW6W0XNkA"
   );
   //new one -> AIzaSyBYm_TyKpW2rrhyOZSekvc1BlUP9_SKJYA
   const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
