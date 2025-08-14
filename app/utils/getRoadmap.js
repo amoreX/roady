@@ -7,7 +7,7 @@ export async function getRoad(topic) {
     "AIzaSyAxWhVJfD7fw1RLuP86qNMbflH2N7gcchY"
   );
   //new one -> AIzaSyBYm_TyKpW2rrhyOZSekvc1BlUP9_SKJYA
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   let prompt = `give me a roadmap to learn ${topic} , do NOT skip any topic ,  include every topic in proper sections and only respond in JSON nothing else,do not give any other text , so that i can use JSON function to convert your response to JSON ,json structure should be identical to this  id: "root",
     name: "Data Structures and Algorithms",
